@@ -27,23 +27,36 @@ class Database
         }
     }
 
+    public function getNote(): array 
+    {
+        try{
+            $notes = [];
+            $query = "SELECT id, title, created FROM notes" ; 
+            $result = $this->conn->query($query);
+            $notes = $result->fetchAll(PDO::FETCH_ASSOC);
+            return $notes;
+        } catch (Throwable $e) {
+            throw new StorageExpection('Nie udało się pobrac danych z notatek', 400,$e);
+        } 
+    }
+
     public function createNote(array $data): void 
     {
         try {
-        echo "pusto pusto";
         
-        $title = $data['title'];
-        $description = $data['description'];
-        $created = date('Y-m-d H:i:s');
+        $title = $this->conn->quote($data['title']);
+        $description = $this->conn->quote($data['description']);
+        $created = $this->conn->quote(date('Y-m-d H:i:s'));
 
         $query = "
             INSERT INTO notes(title, description, created) 
-            VALUES('$title', '$description', '$created')
+            VALUES($title, $description, $created)
             ";
 
         $this->conn->exec($query);
 
     }catch (Throwable $e) {
+        throw new StorageExpection('Nie udało się stworzyć notatki', 400);
         dump($e);
         exit;
     }
