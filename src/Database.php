@@ -27,7 +27,7 @@ class Database
         }
     }
 
-    public function getNote(): array 
+    public function getNotes(): array 
     {
         try{
             $notes = [];
@@ -37,6 +37,20 @@ class Database
             return $notes;
         } catch (Throwable $e) {
             throw new StorageExpection('Nie udało się pobrac danych z notatek', 400,$e);
+        } 
+    }
+
+    public function getNote(int $id): array 
+    {
+        try{
+            $query = "SELECT * FROM notes WHERE id = $id"; 
+            $result = $this->conn->query($query);
+            $note = $result->fetch(PDO::FETCH_ASSOC);
+            
+            return $note;
+            
+        } catch (Throwable $e) {
+            throw new StorageExpection('Nie udało się pobrać notatki', 400,$e);
         } 
     }
 

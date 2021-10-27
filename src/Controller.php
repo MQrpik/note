@@ -37,8 +37,6 @@ class Controller
 
   public function run(): void
   {
-    $viewParams = [];
-
     switch ($this->action()) {
       case 'create':
         $page = 'create';
@@ -57,6 +55,12 @@ class Controller
         break;
 
       case 'show':
+        $page = 'show';
+
+        $data = $this->getRequestGet();
+        $noteId = (int) $data['id'];
+        $this->database->getNote($noteId);
+
         $viewParams = [
           'title' => 'Moja notatka',
           'description' => 'Opis'
@@ -64,17 +68,16 @@ class Controller
         break;
       default:
         $page = 'list';
-
         $data = $this->getRequestGet();
-
-        $notes= $this->database->getNote();
-        dump($notes);
-
-        $viewParams['before'] = $data['before'] ?? null;
+        $notes= 
+         $viewParams = [
+            'notes' => $this->database->getNotes(),
+            'before' => $data['before'] ?? null
+         ];
         break;
     }
 
-    $this->view->render($page, $viewParams);
+    $this->view->render($page, $viewParams ?? []);
   }
 
   private function action(): string
