@@ -7,8 +7,15 @@
           case 'created':
             echo 'Notatka została utworzona';
           break;
+        }}
+    if(!empty($params['error'])){
+        switch($params['error']) {
+          case 'noteNotFound':
+            echo 'Notatka nie została odnaleziona';
+          break;
         }
   } ?>
+  
   </div>
 
   <div class="tbl-header">  
@@ -31,7 +38,7 @@
             <td><?php echo htmlentities($note['id'])  ?></td>
             <td><center><?php echo htmlentities($note['title']) ?></center></td>
             <td><?php echo htmlentities($note['created'])  ?></td>
-            <td> <a href="/?action=show&id=<?php echo htmlentities($note['id']) ?>">Pokaż</a></td>
+            <td><a href="/?action=show&id=<?php echo htmlentities($note['id']) ?>"> <button>Pokaż</button></a></td>
           </tr>
         <?php endforeach; ?>
      </tbody>

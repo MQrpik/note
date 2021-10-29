@@ -9,6 +9,7 @@ require_once("src/View.php");
 require_once("src/Exception/ConfigurationException.php");
 
 use App\Exception\ConfigurationException;
+use App\Exception\NotFoundException;
 
 class Controller
 {
@@ -59,11 +60,14 @@ class Controller
 
         $data = $this->getRequestGet();
         $noteId = (int) $data['id'];
-        $this->database->getNote($noteId);
 
-        $viewParams = [
-          'title' => 'Moja notatka',
-          'description' => 'Opis'
+        try {
+           $note = $this->database->getNote($noteId); 
+        } catch (NotFoundException $e) {
+          header('Location: /?error=noteNotFound');
+        }
+         $viewParams = [
+            'note' => $note
         ];
         break;
       default:
@@ -72,7 +76,8 @@ class Controller
         $notes= 
          $viewParams = [
             'notes' => $this->database->getNotes(),
-            'before' => $data['before'] ?? null
+            'before' => $data['before'] ?? null,
+            'error' => $data['error'] ?? null
          ];
         break;
     }
