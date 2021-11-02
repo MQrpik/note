@@ -1,8 +1,7 @@
 <div class="show">
   <?php 
-  $note = $params['note'] ?? null; 
-  dump($note['title']);
-  ?>
+  $note = $params['note'] ?? null; ?>
+  <?php if ($note) :  ?>
   <ul>
     <li>Id: <?php echo htmlentities($note['id']) ?></li>
     <li>Tytuł: <?php echo htmlentities($note['title']) ?></li>
@@ -12,4 +11,9 @@
   <a href="/">
   <button>Powrót do listy</button>
   </a>
+  <?php else: ?>
+    <div>
+      Brak notatki do wyświetlenia 
+    </div>
+    <?php endif; ?>
 </div> 

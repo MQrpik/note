@@ -13,6 +13,9 @@
           case 'noteNotFound':
             echo 'Notatka nie została odnaleziona';
           break;
+          case 'missingNoteId':
+            echo 'Niepoprawne ID notatki';
+          break;
         }
   } ?>
   

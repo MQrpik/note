@@ -10,7 +10,7 @@ require_once("src/Exception/ConfigurationException.php");
 
 use App\Exception\ConfigurationException;
 use App\Exception\NotFoundException;
-
+use App\Request;
 class Controller
 {
   private const DEFAULT_ACTION = 'list';
@@ -18,7 +18,7 @@ class Controller
   private static array $configuration = [];
 
   private Database $database;
-  private array $request;
+  private Request $request;
   private View $view;
 
   public static function initConfiguration(array $configuration) : void
@@ -26,7 +26,7 @@ class Controller
     self::$configuration = $configuration;
   }
 
-  public function __construct(array $request)
+  public function __construct(Request $request)
   {
     if (empty(self::$configuration['db'])) {
       throw new ConfigurationException('Configuration problem');
@@ -58,13 +58,19 @@ class Controller
       case 'show':
         $page = 'show';
 
-        $data = $this->getRequestGet();
-        $noteId = (int) $data['id'];
+       // $data = $this->getRequestGet();
+       // $noteId = (int) ($data['id'] ?? null);
+         $noteId = $this->request->getParam('Id');
+        if (!$noteId) {
+          header ('Location: /?error=missingNoteId');
+          exit;
+        }
 
         try {
-           $note = $this->database->getNote($noteId); 
+          $note = $this->database->getNote($noteId); 
         } catch (NotFoundException $e) {
           header('Location: /?error=noteNotFound');
+          exit;
         }
          $viewParams = [
             'note' => $note
