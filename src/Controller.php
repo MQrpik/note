@@ -36,31 +36,21 @@ class Controller
     $this->view = new View();
   }
 
-  public function run(): void
-  {
-    switch ($this->action()) {
-      case 'create':
-        $page = 'create';
-        $created = false;
-
-        $data = $this->getRequestPost();
-        if (!empty($data)) {
-          $created = true;  
-
+  public function create() {   
+        if ($this->request->hasPost()) {
+           
           $this->database->createNote([
-            'title' => $data['title'],
-            'description' => $data['description']
+            'title' => $this->request->postParam('title'),
+            'description' => $this->request->postParam('description')
           ]);
           header('Location: /?before=created');
+          exit;
         }
-        break;
+        $this->view->render('create');
+  }
 
-      case 'show':
-        $page = 'show';
-
-       // $data = $this->getRequestGet();
-       // $noteId = (int) ($data['id'] ?? null);
-         $noteId = $this->request->getParam('Id');
+  public function show() {
+         $noteId = (int) $this->request->getParam('id');
         if (!$noteId) {
           header ('Location: /?error=missingNoteId');
           exit;
@@ -75,35 +65,39 @@ class Controller
          $viewParams = [
             'note' => $note
         ];
-        break;
-      default:
-        $page = 'list';
-        $data = $this->getRequestGet();
-        $notes= 
-         $viewParams = [
-            'notes' => $this->database->getNotes(),
-            'before' => $data['before'] ?? null,
-            'error' => $data['error'] ?? null
-         ];
-        break;
-    }
+       $this->view->render('show');
+  }
 
-    $this->view->render($page, $viewParams ?? []);
+  public function list() {
+         $this->view->render(
+           'list',
+           [
+            'notes' => $this->database->getNotes(),
+            'before' => $this->request->getParam('before'),
+            'error' => $this->request->getParam('error')
+           ]
+           );
+  }
+
+  public function run(): void
+  {
+    switch ($this->action()) {
+      case 'create':
+        $this->create();
+      break;
+
+      case 'show':
+        $this->show();
+      break;
+
+      default:
+        $this->list();
+      break;
+    } 
   }
 
   private function action(): string
   {
-    $data = $this->getRequestGet();
-    return $data['action'] ?? self::DEFAULT_ACTION;
-  }
-
-  private function getRequestGet(): array
-  {
-    return $this->request['get'] ?? [];
-  }
-
-  private function getRequestPost(): array
-  {
-    return $this->request['post'] ?? [];
+    return $this->request->getParam('action', self::DEFAULT_ACTION);
   }
 }

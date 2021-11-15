@@ -12,11 +12,16 @@ class Request {
         $this->post = $post;
     }
 
-    public function getParam(string $name) {
-        return $this->get[$name] ?? null;
+    public function hasPost(): bool
+    {
+        return !empty($this->post);
     }
 
-    public function postParam(string $name) {
-        return $this->post[$name] ?? null;
+    public function getParam(string $name, $default = null) {
+        return $this->get[$name] ?? $default;
+    }
+
+    public function postParam(string $name, $default = null) {
+        return $this->post[$name] ?? $default;
     }
 }
