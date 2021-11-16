@@ -4,38 +4,12 @@ declare(strict_types=1);
 
 namespace App;
 
-require_once("src/Database.php");
-require_once("src/View.php");
-require_once("src/Exception/ConfigurationException.php");
+require_once("src/AbstractController.php");
 
-use App\Exception\ConfigurationException;
 use App\Exception\NotFoundException;
-use App\Request;
-class Controller
+
+class Controller extends AbstractController 
 {
-  private const DEFAULT_ACTION = 'list';
-
-  private static array $configuration = [];
-
-  private Database $database;
-  private Request $request;
-  private View $view;
-
-  public static function initConfiguration(array $configuration) : void
-  {
-    self::$configuration = $configuration;
-  }
-
-  public function __construct(Request $request)
-  {
-    if (empty(self::$configuration['db'])) {
-      throw new ConfigurationException('Configuration problem');
-    }
-    $this->database = new Database(self::$configuration['db']);
-    $this->request = $request;
-    $this->view = new View();
-  }
-
   public function create() {   
         if ($this->request->hasPost()) {
            
@@ -62,10 +36,11 @@ class Controller
           header('Location: /?error=noteNotFound');
           exit;
         }
-         $viewParams = [
-            'note' => $note
-        ];
-       $this->view->render('show');
+  
+       $this->view->render(
+        'show', 
+         ['note' => $note]
+       );
   }
 
   public function list() {
@@ -76,28 +51,7 @@ class Controller
             'before' => $this->request->getParam('before'),
             'error' => $this->request->getParam('error')
            ]
-           );
+        );
   }
-
-  public function run(): void
-  {
-    switch ($this->action()) {
-      case 'create':
-        $this->create();
-      break;
-
-      case 'show':
-        $this->show();
-      break;
-
-      default:
-        $this->list();
-      break;
-    } 
-  }
-
-  private function action(): string
-  {
-    return $this->request->getParam('action', self::DEFAULT_ACTION);
-  }
+ 
 }

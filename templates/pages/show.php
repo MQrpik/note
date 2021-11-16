@@ -2,6 +2,7 @@
   <?php 
   $note = $params['note'] ?? null; ?>
   <?php if ($note) :  ?>
+  
   <ul>
     <li>Id: <?php echo htmlentities($note['id']) ?></li>
     <li>Tytuł: <?php echo htmlentities($note['title']) ?></li>
