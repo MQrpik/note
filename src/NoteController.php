@@ -8,9 +8,9 @@ require_once("src/AbstractController.php");
 
 use App\Exception\NotFoundException;
 
-class Controller extends AbstractController 
+class NoteController extends AbstractController 
 {
-  public function create() {   
+  public function createAction() {   
         if ($this->request->hasPost()) {
            
           $this->database->createNote([
@@ -23,7 +23,7 @@ class Controller extends AbstractController
         $this->view->render('create');
   }
 
-  public function show() {
+  public function showAction() {
          $noteId = (int) $this->request->getParam('id');
         if (!$noteId) {
           header ('Location: /?error=missingNoteId');
@@ -43,7 +43,7 @@ class Controller extends AbstractController
        );
   }
 
-  public function list() {
+  public function listAction() {
          $this->view->render(
            'list',
            [

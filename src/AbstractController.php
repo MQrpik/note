@@ -40,20 +40,32 @@ abstract class AbstractController
 
   
   public function run(): void
-  {
-    switch ($this->action()) {
+  { 
+    /* switch ($this->action()) {
       case 'create':
-      $this->createRecord();
+        $this->create();
       break;
 
       case 'show':
-       $this->showRecord();
+       $this->show();
       break;
 
       default:
-       $this->listRecord();
-      break;
-    } 
+       $this->list();
+      break; 
+      Ten kod robił dokłądnie to co poniżej i był bardziej intuicyjny ale nie wiedziec czemu VS traktował go jako błędny (a działał) 
+      wiec zastosowalem ten krótszy ale trudniejszy w czytaniu.
+    } */
+    {
+      $action = $this->action() . 'Action';
+      if (!method_exists($this, $action)){
+       $action = self::DEFAULT_ACTION . 'Action'; 
+      }else {
+        $this->$action();
+      }
+
+      
+    }
   }
     
   private function action(): string

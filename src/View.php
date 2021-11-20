@@ -10,4 +10,9 @@ class View
   {
     require_once("templates/layout.php");
   }
+
+  private function escape(array $params): array {
+    $clearParams = [];
+    return $clearParams;
+  }
 }
