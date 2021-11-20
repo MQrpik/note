@@ -38,10 +38,10 @@
      <tbody>
         <?php foreach ($params['notes'] ?? [] as $note): ?>
           <tr>
-            <td><?php echo htmlentities($note['id'])  ?></td>
-            <td><center><?php echo htmlentities($note['title']) ?></center></td>
-            <td><?php echo htmlentities($note['created'])  ?></td>
-            <td><a href="/?action=show&id=<?php echo htmlentities($note['id']) ?>"> <button>Pokaż</button></a></td>
+            <td><?php echo $note['id']  ?></td>
+            <td><center><?php echo $note['title'] ?></center></td>
+            <td><?php echo $note['created']  ?></td>
+            <td><a href="/?action=show&id=<?php echo $note['id'] ?>"> <button>Pokaż</button></a></td>
           </tr>
         <?php endforeach; ?>
      </tbody>

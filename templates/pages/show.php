@@ -4,10 +4,10 @@
   <?php if ($note) :  ?>
   
   <ul>
-    <li>Id: <?php echo htmlentities($note['id']) ?></li>
-    <li>Tytuł: <?php echo htmlentities($note['title']) ?></li>
-    <li>Opis: <?php echo htmlentities($note['description']) ?></li>
-    <li>Data dodania: <?php echo htmlentities($note['created']) ?></li>
+    <li>Id: <?php echo $note['id'] ?></li>
+    <li>Tytuł: <?php echo $note['title'] ?></li>
+    <li>Opis: <?php echo $note['description'] ?></li>
+    <li>Data dodania: <?php echo $note['created'] ?></li>
   </ul>
   <a href="/">
   <button>Powrót do listy</button>

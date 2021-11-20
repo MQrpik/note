@@ -10,7 +10,6 @@ require_once("src/View.php");
 
 use App\Exception\ConfigurationException;
 use App\Request;
-use Collator;
 
 abstract class AbstractController 
 {
