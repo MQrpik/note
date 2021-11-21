@@ -12,6 +12,9 @@
   <a href="/">
   <button>Powrót do listy</button>
   </a>
+  <a href="/?action=edit&id=<?php echo $note['id'] ?>">
+  <button>Edycja notatki</button>
+  </a>
   <?php else: ?>
     <div>
       Brak notatki do wyświetlenia 
