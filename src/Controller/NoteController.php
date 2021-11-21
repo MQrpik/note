@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App;
-
-require_once("src/Controller/AbstractController.php");
+namespace App\Controller;
 
 use App\Exception\NotFoundException;
 
@@ -53,5 +51,9 @@ class NoteController extends AbstractController
            ]
         );
   }
+
+  public function editAction() {
+  
+}
  
 }
