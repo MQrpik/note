@@ -1,9 +1,12 @@
 <?php 
-  $note = $params['note'] ?? null; ?>
+  if (!empty($params)): ?>
+<?php $note = $params['note'] ?? null; ?>
+ 
 <div>
   <h3> Edycja notatki: <?php echo $note['title'] ?></h3>
   <div>
       <form class="note-form" action="/?action=edit" method="post">
+      <input name="id" type="hidden" value=<?php echo $note['id'] ?> />
         <ul>
           <li>
             <label>Tytuł <span class="required">*</span></label>
@@ -21,3 +24,6 @@
   
   </div>
 </div>
+<?php else: ?>
+Błąd edycji <a href="/">Wróć</a>
+<?php endif ?>
