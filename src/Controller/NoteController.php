@@ -10,7 +10,6 @@ class NoteController extends AbstractController
 {
   public function createAction() {   
         if ($this->request->hasPost()) {
-           
           $this->database->createNote([
             'title' => $this->request->postParam('title'),
             'description' => $this->request->postParam('description')
@@ -50,9 +49,16 @@ class NoteController extends AbstractController
   }
 
   public function editAction() {
+
+    if($this->request->isPost()) {
+      $noteId = (int)$this->request->postParam('id');
+      dump($noteId);
+      exit;
+    }
+    
     $noteId = (int)$this->request->getParam('id');
     if (!$noteId) {
-      $this->redirect('error=noteNotFound');
+      $this->redirect('error=missingNoteId');
     }  
     try {
           $note = $this->database->getNote($noteId); 
