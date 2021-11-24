@@ -74,8 +74,27 @@ class Database
         throw new StorageExpection('Nie udało się stworzyć notatki', 400);
         dump($e);
         exit;
+     }   
     }
-    
+
+    public function editNote(int $id, array $data): void {
+        try{
+            $title = $this->conn->quote($data['title']);
+            $description = $this->conn->quote($data['description']);
+        
+            $query = "
+            UPDATE notes
+            SET title = $title, description = $description
+            WHERE id = $id
+            ";
+
+        $this->conn->exec($query);
+
+        } catch (Throwable $e) {
+        throw new StorageExpection('Nie udało się zaktualizować notatki', 400);
+        dump($e);
+        exit; 
+        }
     }
 
     private function createConnection(array $config): void

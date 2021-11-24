@@ -7,6 +7,9 @@
           case 'created':
             echo 'Notatka została utworzona';
           break;
+          case 'edited':
+            echo 'Notatka została edytowana';
+          break;
         }}
     if(!empty($params['error'])){
         switch($params['error']) {

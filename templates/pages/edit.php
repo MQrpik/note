@@ -1,6 +1,5 @@
 <?php 
   if (!empty($params)): ?>
-  <?php dump($params); ?>
 <?php $note = $params['note'] ?? null; ?>
  
 <div>
