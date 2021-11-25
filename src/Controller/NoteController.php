@@ -76,6 +76,11 @@ class NoteController extends AbstractController
        ); 
 }
 
+  public function deleteAction(): void {
+
+  exit('delete');
+}
+
 private function redirect (string $to) {
 header("Location: /?$to");
 exit;
