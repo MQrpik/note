@@ -10,6 +10,9 @@
           case 'edited':
             echo 'Notatka została edytowana';
           break;
+          case 'deleted':
+            echo 'Notatka została usunięta';
+          break;
         }}
     if(!empty($params['error'])){
         switch($params['error']) {

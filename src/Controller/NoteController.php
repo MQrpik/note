@@ -20,16 +20,7 @@ class NoteController extends AbstractController
   }
 
   public function showAction() {
-         $noteId = (int) $this->request->getParam('id');
-        if (!$noteId) {
-          $this->redirect('error=missingNoteId');
-        }
-
-        try {
-          $note = $this->database->getNote($noteId); 
-        } catch (NotFoundException $e) {
-          $this->redirect('error=noteNotFound');
-        }
+      $note = $this->getNote();
   
        $this->view->render(
         'show', 
@@ -60,15 +51,7 @@ class NoteController extends AbstractController
       $this->redirect('before=edited');
     }
     
-    $noteId = (int)$this->request->getParam('id');
-    if (!$noteId) {
-      $this->redirect('error=missingNoteId');
-    }  
-    try {
-          $note = $this->database->getNote($noteId); 
-        } catch (NotFoundException $e) {
-          $this->redirect('error=noteNotFound');
-        }
+     $note = $this->getNote();
    
        $this->view->render(
         'edit', 
@@ -78,12 +61,32 @@ class NoteController extends AbstractController
 
   public function deleteAction(): void {
 
-  exit('delete');
+  if($this->request->isPost()){
+    $id = (int)$this->request->postParam('id');
+    $this->database->deleteNote($id);
+    $this->redirect('before=deleted');
+  }
+   $this->view->render(
+        'delete', 
+         ['note' => $this->getNote()]
+       ); 
 }
 
 private function redirect (string $to) {
 header("Location: /?$to");
 exit;
 }
- 
+  private function getNote(): array {
+   $noteId = (int)$this->request->getParam('id');
+    if (!$noteId) {
+      $this->redirect('error=missingNoteId');
+    }  
+    try {
+          $note = $this->database->getNote($noteId); 
+        } catch (NotFoundException $e) {
+          $this->redirect('error=noteNotFound');
+        }
+    return $note;
+  }
+
 }
