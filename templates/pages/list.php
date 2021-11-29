@@ -26,6 +26,23 @@
   } ?>
   
   </div>
+    <div>
+    <div>
+    <form class="settings-form" action="/" method="GET">
+      <div>Sortuj po:</div>
+        <label>Tytuł: <input name="sortby" type="radio" value="title"/></label>
+        <label>Data: <input name="sortby" type="radio" value="date"/></label>
+   </div>
+    <div>
+    <div>Kierunek sortowania:</div>
+      <label>Rosnąco: <input name="sortorder" type="radio" value="asc"/></label>
+      <label>Malejąco: <input name="sortorder" type="radio" value="desc"/></label>
+    </div>
+    </form>
+  </div>
+  <div> 
+
+  </div>
 
   <div class="tbl-header">  
     <table cellpadding="0" cellspacing="0" border="0">
