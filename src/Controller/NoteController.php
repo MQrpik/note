@@ -30,8 +30,13 @@ class NoteController extends AbstractController
 
   public function listAction() {
 
+        $pageSize = $this->request->getParam('page', 10);
+        $pageNumber = $this->request->getParam('page', 1);
         $sortBy = $this->request->getParam('sortby', 'title');
         $sortOrder = $this->request->getParam('sortorder', 'desc');
+        if (!in_array($pageSize, [1, 5, 10, 25])) {
+          $pageSize = 10;
+        }
 
         $this->view->render(
            'list', 
@@ -40,6 +45,7 @@ class NoteController extends AbstractController
               'by' => $sortBy,
               'order' => $sortOrder
             ],
+            'page' => ['number' => $pageNumber, 'size' => $pageSize],
             'notes' => $this->database->getNotes($sortBy, $sortOrder),
             'before' => $this->request->getParam('before'),
             'error' => $this->request->getParam('error')

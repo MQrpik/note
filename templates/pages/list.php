@@ -44,7 +44,11 @@
       <label>Rosnąco: <input name="sortorder" type="radio" value="asc" <?php echo $order === 'asc' ? 'checked' : '' ?> /></label>
       <label>Malejąco: <input name="sortorder" type="radio" value="desc" <?php echo $order === 'desc' ? 'checked' : '' ?> /></label>
     </div>
-    <input type="submit" value="Wyślij" />
+    <div>
+      <div>Rozmiar pagera</div>
+      <label>1 <input name="pageSize" type="radio" value="1"/></label>
+    </div>
+    <input type="submit" value="Sortuj" />
     </form>
  </div>
  
