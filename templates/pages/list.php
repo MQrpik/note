@@ -30,6 +30,10 @@
       $sort = $params['sort'] ?? [];
       $by = $sort['by'] ?? 'title';
       $order = $sort['order'] ?? 'desc';
+      
+      $page = $params['page'] ?? [];
+      $size = $page['size'] ?? 10;
+      $number = $page['number'] ?? 1;
   ?>
 
     <div>
@@ -46,7 +50,10 @@
     </div>
     <div>
       <div>Rozmiar pagera</div>
-      <label>1 <input name="pageSize" type="radio" value="1"/></label>
+      <label>1 <input name="pagesize" type="radio" value="1" <?php echo $size === 1 ? 'checked' : '' ?> /></label>
+      <label>5 <input name="pagesize" type="radio" value="5" <?php echo $size === 5 ? 'checked' : '' ?> /></label>
+      <label>10 <input name="pagesize" type="radio" value="10" <?php echo $size === 10 ? 'checked' : '' ?> /></label>
+      <label>25 <input name="pagesize" type="radio" value="25" <?php echo $size === 25 ? 'checked' : '' ?> /></label>
     </div>
     <input type="submit" value="Sortuj" />
     </form>

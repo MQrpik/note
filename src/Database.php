@@ -25,22 +25,39 @@ class Database
         }
     }
 
-    public function getNotes(string $sortBy, string $sortOrder): array 
+    public function getNotes(int $pageNumber, int $pageSize, string $sortBy, string $sortOrder): array 
     {
         try{
+            $limit = $pageSize;
+            $offset = ($pageNumber -1) * $pageSize;
+
             if (!in_array($sortBy, ['created', 'title'] )) {
                 $sortBy = 'title';
             }
             if (!in_array($sortOrder, ['desc', 'asc'] )) {
                 $sortBy = 'desc';
             }
-dump($sortBy);
+
             $notes = [];
             $query = "
                     SELECT id, title, created 
                     FROM notes
                     ORDER BY $sortBy $sortOrder
+                    LIMIT $offset, $limit
                     " ; 
+            $result = $this->conn->query($query);
+            $notes = $result->fetchAll(PDO::FETCH_ASSOC);
+            return $notes;
+        } catch (Throwable $e) {
+            throw new StorageExpection('Nie udało się pobrac danych z notatek', 400,$e);
+        } 
+    }
+
+    public function getCount(): array 
+    {
+        try{
+            $query = "SELECT cont(*) FROM notes"; 
+
             $result = $this->conn->query($query);
             $notes = $result->fetchAll(PDO::FETCH_ASSOC);
             return $notes;
