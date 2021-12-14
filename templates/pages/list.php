@@ -26,7 +26,7 @@
   } ?>
    </div>
   <?php 
-   
+   // dump($params);
       $sort = $params['sort'] ?? [];
       $by = $sort['by'] ?? 'title';
       $order = $sort['order'] ?? 'desc';
@@ -34,6 +34,7 @@
       $page = $params['page'] ?? [];
       $size = $page['size'] ?? 10;
       $number = $page['number'] ?? 1;
+      $pages = $page['pages'] ?? 1
   ?>
 
     <div>
@@ -87,5 +88,14 @@
      </tbody>
    </table>
 </div>
+  <ul class="pagination">
+    <?php for($i =1; $i <= $pages; $i++): ?>
+      <li>
+        <a hrtef="/">
+          <button><?php echo $i ?></button>
+        </a>
+      </li>
+ <?php endfor; ?>
+</ul>
 </section>
 </div>

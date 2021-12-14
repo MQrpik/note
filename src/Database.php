@@ -53,16 +53,19 @@ class Database
         } 
     }
 
-    public function getCount(): array 
+    public function getCount(): int
     {
         try{
-            $query = "SELECT cont(*) FROM notes"; 
-
+            $query = "SELECT count(*) AS cn FROM notes"; 
             $result = $this->conn->query($query);
-            $notes = $result->fetchAll(PDO::FETCH_ASSOC);
-            return $notes;
+            $result = $result->fetch(PDO::FETCH_ASSOC);
+            if ($result === false) {
+                throw new StorageExpection('Bład przy pobieraniu ilości rekordow z bazy', 400);
+                //return (int) $result ['cn'];
+            }
+            return (int) $result['cn'];
         } catch (Throwable $e) {
-            throw new StorageExpection('Nie udało się pobrac danych z notatek', 400,$e);
+            throw new StorageExpection('Nie udało się pobrac ilości notatek', 400,$e);
         } 
     }
 
