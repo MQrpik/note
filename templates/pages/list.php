@@ -89,13 +89,26 @@
    </table>
 </div>
   <ul class="pagination">
+  <?php 
+  $paginationUlr = "&pagesize=$size&sortby=$by&sortorder=$order";
+  if($number >1 ) { ?>
+  <li>
+    <a href="/?page=<?php echo $number - 1 . $paginationUlr?>"> 
+    <button><<</button>
+    </a></li> <?php } ?>
     <?php for($i =1; $i <= $pages; $i++): ?>
       <li>
-        <a hrtef="/">
+        <a href="/?page=<?php echo $i . $paginationUlr ?>">
           <button><?php echo $i ?></button>
         </a>
       </li>
- <?php endfor; ?>
+  <?php endfor; ?>
+   <?php if($number < $pages ) { ?>
+  <li>
+    <a href="/?page=<?php echo $number + 1 . $paginationUlr ?>"> 
+    <button>>></button>
+    </a></li>
+    <?php } ?>
 </ul>
 </section>
 </div>
