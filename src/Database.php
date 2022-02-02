@@ -25,6 +25,51 @@ class Database
         }
     }
 
+    public function serchNotes (string $phrase, int $pageNumber, int $pageSize, string $sortBy, string $sortOrder) : array
+    {
+        try{
+            $limit = $pageSize;
+            $offset = ($pageNumber -1) * $pageSize;
+            
+            if (!in_array($sortBy, ['created', 'title'] )) {
+                $sortBy = 'title';
+            }
+            if (!in_array($sortOrder, ['desc', 'asc'] )) {
+                $sortBy = 'desc';
+            }
+
+            $phrase = $this->conn->quote('%' . $phrase . '%', PDO::PARAM_STR);
+
+            $query = "
+                    SELECT id, title, created 
+                    FROM notes
+                    WHERE title LIKE ($phrase)
+                    ORDER BY $sortBy $sortOrder
+                    LIMIT $offset, $limit
+                    " ; 
+            $result = $this->conn->query($query);
+            $notes = $result->fetchAll(PDO::FETCH_ASSOC);
+            return $notes;
+        } catch (Throwable $e) {
+            throw new StorageExpection('Nie udało się wyszukać notatek', 400,$e);
+        } 
+    }
+
+    public function getSearchCount(string $phrase) : int
+    {
+        try{
+            $phrase = $this->conn->quote('%' . $phrase . '%', PDO::PARAM_STR);
+            $query = "SELECT count(*) AS cn FROM notes WHERE title LIKE ($phrase)"; 
+            $result = $this->conn->query($query);
+            $result = $result->fetch(PDO::FETCH_ASSOC);
+            if ($result === false) {
+                throw new StorageExpection('Bład przy pobieraniu ilości rekordow z bazy', 400);
+            }
+            return (int) $result['cn'];
+        } catch (Throwable $e) {
+            throw new StorageExpection('Nie udało się pobrac ilości notatek', 400,$e);
+        } 
+    }
     public function getNotes(int $pageNumber, int $pageSize, string $sortBy, string $sortOrder): array 
     {
         try{
