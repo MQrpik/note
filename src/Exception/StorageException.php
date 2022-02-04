@@ -6,6 +6,6 @@ namespace App\Exception;
 
 use App\Exception\AppException;
 
-class StorageExpection extends AppException {
+class StorageException extends AppException {
 
 }

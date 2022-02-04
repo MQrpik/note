@@ -95,7 +95,7 @@
 </div>
   <ul class="pagination">
   <?php 
-  $paginationUlr = "&pagesize=$size&sortby=$by&sortorder=$order";
+  $paginationUlr = "&phrase=$phrase&pagesize=$size&sortby=$by&sortorder=$order";
   if($number >1 ) { ?>
   <li>
     <a href="/?page=<?php echo $number - 1 . $paginationUlr?>"> 

@@ -43,15 +43,13 @@ class NoteController extends AbstractController
         }
 
         if ($phrase) {
-          $note = $this->database->serchNotes($phrase, $pageNumber, $pageSize, $sortBy, $sortOrder);
+          $noteList = $this->database->serchNotes($phrase, $pageNumber, $pageSize, $sortBy, $sortOrder);
           $notes = $this->database->getSearchCount($phrase );
         } else {    
-          $note = $this->database->getNotes($pageNumber, $pageSize, $sortBy, $sortOrder);
+          $noteList = $this->database->getNotes($pageNumber, $pageSize, $sortBy, $sortOrder);
           $notes = $this->database->getCount();
         }
 
-        dump($note);
-        dump($notes);
 
         $this->view->render(
            'list', 
@@ -59,7 +57,7 @@ class NoteController extends AbstractController
             'phrase' => $phrase,
             'sort' => ['by' => $sortBy, 'order' => $sortOrder ],
             'page' => ['number' => $pageNumber, 'size' => $pageSize, 'pages' => (int) ceil($notes / $pageSize)],
-            'notes' => $note,
+            'notes' => $noteList,
             'before' => $this->request->getParam('before'),
             'error' => $this->request->getParam('error')
            ]
@@ -108,11 +106,9 @@ exit;
     if (!$noteId) {
       $this->redirect('error=missingNoteId');
     }  
-    try {
-          $note = $this->database->getNote($noteId); 
-        } catch (NotFoundException $e) {
-          $this->redirect('error=noteNotFound');
-        }
+     $note = $this->database->getNote($noteId); 
+        
+        
     return $note;
   }
 

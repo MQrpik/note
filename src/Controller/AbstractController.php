@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Exception\ConfigurationException;
+
 use App\Request;
 use App\Database;
 use App\View;
+use App\Exception\ConfigurationException;
+use App\Exception\StorageException;
+use App\Exception\NotFoundException;
 
 abstract class AbstractController 
 {
@@ -54,14 +57,20 @@ abstract class AbstractController
       wiec zastosowalem ten krótszy ale trudniejszy w czytaniu.
     } */
     {
-      $action = $this->action() . 'Action';
-      if (!method_exists($this, $action)){
-       $action = self::DEFAULT_ACTION . 'Action'; 
-      }else {
+      try {
+        $action = $this->action() . 'Action';
+        if (!method_exists($this, $action)){
+        $action = self::DEFAULT_ACTION . 'Action'; 
+        }
+       // throw new StorageException('test');
         $this->$action();
+      
+      }catch (StorageException $e){
+        $this->view->render('error', ['message' => $e->getMessage()]);
+      }catch (NotFoundException $e) {
+        $this->redirect('error=noteNotFound');
       }
 
-      
     }
   }
     
