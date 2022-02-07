@@ -6,7 +6,7 @@ namespace App\Controller;
 
 
 use App\Request;
-use App\Database;
+use App\Model\Database;
 use App\View;
 use App\Exception\ConfigurationException;
 use App\Exception\StorageException;

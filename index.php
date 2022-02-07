@@ -13,7 +13,6 @@ require_once("src/Utils/debug.php");
 $configuration = require_once("config\config.php");
 
 use App\Request;
-//use App\Controller\AbstractController;
 use App\Controller\NoteController;
 use App\Exception\AppException;
 use App\Exception\ConfigurationException;
@@ -21,9 +20,6 @@ use App\Exception\ConfigurationException;
 $request = new Request($_GET, $_POST, $_SERVER);
 
 try {
-//$controller = new Controller($request);
-//$controller->run(); 
-
 NoteController::initConfiguration($configuration);
 (new NoteController($request))->run();
 }catch (ConfigurationException $e){
